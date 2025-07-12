@@ -2,6 +2,8 @@
 #include <ostream>
 #pragma comment(lib, "urlmon.lib")
 //<---------------------------------------------------------------------------------------------------------------------------------------------------------------->
+#include "private.h"
+
 #include <cstdlib> // 包含标准库头文件，用于使用exit函数
 #include <ctime>   // 包含时间库头文件，用于获取当前时间
 #include <fstream>
@@ -199,6 +201,7 @@ void main_menu_TUI() {
     exit(1);
   }
 }
+
 //<---------------------------------------------------------------------------------------------------------------------------------------------------------------->
 int main() {
   int main_menu_select = 0; // Store the main menu selection
@@ -226,31 +229,31 @@ int main() {
     std::cout << "请选择一个选项：";
     std::cin >> main_menu_select;
     switch (main_menu_select) {
-    case 1:
+    case MENU_START_SERVER_GUI:
       mcserver_with_gui();
       break;
-    case 2:
+    case MENU_START_SERVER_NOGUI:
       mcserver_without_gui();
       break;
-    case 3:
+    case MENU_ONLINE_HELP:
       std::cout
           << "在线帮助请访问：https://offmn-oh-no-fried-my-notebook.github.io/"
              "Minecraft-Server-CPP-Launcher/"
           << std::endl;
-    case 4:
+    case MENU_JAVA_INSTALL:
       java_install();
       break;
-    case 5:
+    case MENU_LANGUAGE_SETTINGS:
       std::cout << "语言设置功能尚未实现。" << std::endl;
       break;
-    case 6:
+    case MENU_FRP_INSTALL:
       frp_install();
       break;
-    case 7:
+    case MENU_EXIT:
       std::cout << "感谢使用本程序，再见！" << std::endl;
       exit(0);
       break;
-    case 8:
+    case MENU_DISCLAIMER:
       std::cout << "免责声明：本程序仅供学习和研究使用，请勿用于非法用途。" << std::endl;
       std::cout << "如有任何问题，请联系开发者。" << std::endl;
       std::cout << "请确保您拥有服务器JAR文件的合法使用权。" << std::endl;
