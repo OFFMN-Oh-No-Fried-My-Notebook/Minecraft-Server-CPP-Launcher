@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>中文文档</title>
+</head>
+<body>
+    <h1>文档</h1>
+    <h2>下载与使用</h2>
+    <ol>
+        <li>1.下载文件</li>
+        <ol>
+            <button type="button" onclick="location.href='docs/zh_download.html'">下载</button>
+        </ol>
+        <li>2.配置server.ini文件</li>
+        <ol>
+            <li>此文件在启动器目录下</li>
+            <li>使用文本编辑器打开server.ini文件。</li>
+            <li>如果没有，启动器将会自动生成一个默认配置文件。</li>
+            <li>当然，事实上，其实你可以在启动器界面中进行大部分配置。</li>
+            <li>但是，我们不提供服务器jar文件的下载链接。</li>
+            <li>下载文件？你可以在ini配置服务器jar文件该在哪里下载，我们的程序会调用WindowsAPI进行文件下载。</li>
+            <li>请确保你的网络连接正常，以便顺利下载所需文件。</li>
+            <li>如果你在下载过程中遇到问题，可以尝试手动下载服务器jar文件并放置在指定目录。</li>
+            <li>启动器会自动检测jar文件并进行加载(此功能目前尚未实现)。</li>
+            <li>以下是server.ini文件的示例配置：</li>
+            <pre>
+            [Server]
+            JARname=server.jar
+            RAMmax=1024
+            RAMmin=128
+            Downloadurl=https://example.com/downloads/server.jar
+            </pre>
+            <ol>
+                <h3>1.修改[Server]</h3>
+                <li>此项无需修改</li>
+                <h3>2.修改JARname</h3>
+                <li>此项代表服务器jar文件的名称。启动器会根据此项自动查找jar文件。</li>
+                <h3>3.修改RAMmax和RAMmin</h3>
+                <li>此项代表服务器可用的最大和最小内存。根据需要进行调整。</li>
+                <h3>4.修改Downloadurl</h3>
+                <li>此项代表服务器jar文件的下载链接。根据需要进行修改。</li>
+                <li>"https://example.com/downloads/server.jar"是示例链接，请根据实际情况进行修改。下载的文件将会被保存到启动器目录下。</li>
+                <li>下载的文件的名字必须与JARname项一致。</li>
+            </ol>
+        </ol>
+    </ol>
+</body>
+</html>
