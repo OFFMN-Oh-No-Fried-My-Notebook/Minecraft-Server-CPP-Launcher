@@ -46,6 +46,7 @@ std::string serverini_jarname = "";
 std::string download_url = "";
 std::string language_select = "";
 std::string Stupid_proof_stupid_proof_and_uninformed_design_001_select = ""; // 用于存储用户选择
+std::string main_menu_select = ""; // 用于存储主菜单选择
 //<---------------------------------------------------------------------------------------------------------------------------------------------------------------->
 std::string get_exe_directory()
 {
@@ -240,6 +241,43 @@ int main()
 		line_time();
 		main_menu_TUI();
 		line_about();
+		std::cout << "请选择一个选项：";
+		std::cin >> main_menu_select;
+		if (main_menu_select == "1") {
+			mcserver_with_gui();
+		}
+		else if (main_menu_select == "2") {
+			mcserver_without_gui();
+		}
+		else if (main_menu_select == "3") {
+			std::cout << "在线帮助请访问：https://offmn-oh-no-fried-my-notebook.github.io/Minecraft-Server-CPP-Launcher/\n";
+		}
+		else if (main_menu_select == "4") {
+			java_install();
+		}
+		else if (main_menu_select == "5") {
+			std::cout << "语言设置功能尚未实现。\n";
+		}
+		else if (main_menu_select == "6") {
+			frp_install();
+		}
+		else if (main_menu_select == "7") {
+			std::cout << "感谢使用本程序，再见！\n";
+			exit(0);
+		}
+		else if (main_menu_select == "8") {
+			line_tips();
+			std::cout << "免责声明：本程序仅供学习和研究使用，请勿用于非法用途。\n";
+			std::cout << "如有任何问题，请联系开发者。\n";
+			std::cout << "请确保您拥有服务器JAR文件的合法使用权。\n";
+			std::cout << "如果您不确定，请勿使用本工具。\n";
+			std::cout << "请注意，使用本程序可能会导致数据丢失或其他问题，请谨慎操作。\n";
+			std::cout << "开发者不对因使用本程序而导致的任何损失或损害负责。\n";
+			line_tips();
+		}
+		else {
+			std::cerr << "无效的选项，请重新选择。\n";
+		}
 	}
 		
 		
