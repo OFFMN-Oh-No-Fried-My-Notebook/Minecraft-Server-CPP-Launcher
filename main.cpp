@@ -44,7 +44,6 @@ int serverini_rammax = 0;
 int serverini_rammin = 0;
 std::string serverini_jarname = "";
 std::string download_url = "";
-std::string language_select = "";
 std::string Stupid_proof_stupid_proof_and_uninformed_design_001_select = ""; // 用于存储用户选择
 std::string main_menu_select = ""; // 用于存储主菜单选择
 //<---------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -193,10 +192,12 @@ void main_menu_TUI()
 	{
 		std::cout << "1. 启动服务器（带GUI）\n";
 		std::cout << "2. 启动服务器（无GUI）\n";
+		line();
 		std::cout << "3. 查看在线帮助\n";
 		std::cout << "4. 安装运行环境（开源OpenJDK发行版）\n";
 		std::cout << "5. 语言设置\n";
 		std::cout << "6. 安装FRP\n";
+		line();
 		std::cout << "7. 退出\n";
 		std::cout << "8. 免责声明\n";
 	}
@@ -237,6 +238,7 @@ int main()
 	}
 	std::cout << "请选择语言（cn/en）：";
 	std::cin >> language_select;
+	system("cls"); // 清屏
 	while (true) {
 		line_time();
 		main_menu_TUI();
