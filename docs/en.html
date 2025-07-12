@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>English Documentation</title>
+</head>
+<body>
+    <h1>Documentation</h1>
+    <h2>Download and Usage</h2>
+    <ol>
+        <li>1. Download the file</li>
+        <ol>
+            <button type="button" onclick="location.href='docs/en_download.html'">Download</button>
+        </ol>
+        <li>2. Configure the server.ini file</li>
+        <ol>
+            <li>This file is located in the launcher directory</li>
+            <li>Open the server.ini file with a text editor.</li>
+            <li>If it doesn't exist, the launcher will automatically generate a default configuration file.</li>
+            <li>Of course, you can actually make most configurations in the launcher interface.</li>
+            <li>However, we do not provide a download link for the server jar file.</li>
+            <li>Download file? You can configure where the server jar file should be downloaded in the ini file, and our program will call the Windows API to download the file.</li>
+            <li>Please ensure your network connection is working properly to download the required files smoothly.</li>
+            <li>If you encounter problems during the download process, you can try manually downloading the server jar file and placing it in the specified directory.</li>
+            <li>The launcher will automatically detect the jar file and load it (this feature has not been implemented yet).</li>
+            <li>Here is an example configuration for the server.ini file:</li>
+            <pre>
+            [Server]
+            JARname=server.jar
+            RAMmax=1024
+            RAMmin=128
+            Downloadurl=https://example.com/downloads/server.jar
+            </pre>
+            <ol>
+                <h3>1. Modify [Server]</h3>
+                <li>This item does not need to be modified</li>
+                <h3>2. Modify JARname</h3>
+                <li>This item represents the name of the server jar file. The launcher will automatically look for the jar file based on this item.</li>
+                <h3>3. Modify RAMmax and RAMmin</h3>
+                <li>This item represents the maximum and minimum memory available to the server. Adjust as needed.</li>
+                <h3>4. Modify Downloadurl</h3>
+                <li>This item represents the download link for the server jar file. Modify as needed.</li>
+                <li>"https://example.com/downloads/server.jar" is a sample link, please modify it according to the actual situation. The downloaded file will be saved in the launcher directory.</li>
+                <li>The name of the downloaded file must match the JARname item.</li>
+            </ol>
+        </ol>
+    </ol>
+</body>
+</html>
