@@ -17,11 +17,11 @@ void line_time();
 void line_about();
 void read_ini_file();
 void download_jar(const std::string& url);
-void mcserver_with_gui();
-void mcserver_without_gui();
+void mcserver_without_gui_or_not();
 void java_install();
 void frp_install();
 void jar_download_tips();
+void make_ini_file();
 //<=====================================>
 
 //<---------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -46,6 +46,13 @@ std::string serverini_jarname = "";
 std::string download_url = "";
 std::string Stupid_proof_stupid_proof_and_uninformed_design_001_select = ""; // 用于存储用户选择
 std::string main_menu_select = ""; // 用于存储主菜单选择
+std::string server_open_write_ini_go = "";
+std::string server_open_write_ini_go_select = ""; // 用于存储服务器配置选择
+std::string server_ini_rammax = ""; // 用于存储服务器最大内存
+std::string server_ini_rammin = ""; // 用于存储服务器最小内存
+std::string server_ini_jarname = ""; // 用于存储服务器JAR文件名
+std::string server_ini_download_url = ""; // 用于存储服务器JAR下载链接
+std::string get_gui_or_not = ""; // 用于存储用户是否选择GUI
 //<---------------------------------------------------------------------------------------------------------------------------------------------------------------->
 std::string get_exe_directory()
 {
@@ -54,6 +61,7 @@ std::string get_exe_directory()
 	std::string::size_type pos = std::string(path).find_last_of("\\/");
 	return std::string(path).substr(0, pos);
 }
+
 void read_ini_file()
 {
 	std::ifstream file("server.ini");
@@ -150,19 +158,90 @@ void java_install()
 	system("OpenJDK8U-jdk_x64_windows_hotspot_8u292b10.msi /quiet /norestart");
 	std::cout << "运行环境安装完成。\n";
 }
-void mcserver_with_gui()
-{
-	std::cout << "正在启动服务器（带GUI）...\n";
-	read_ini_file();
-	std::string command = "java -Xmx" + std::to_string(serverini_rammax) + "M -Xms" + std::to_string(serverini_rammin) + "M -jar " + serverini_jarname;
-	system(command.c_str());
-}
-void mcserver_without_gui()
+void mcserver_without_gui_or_not()
 {
 	std::cout << "正在启动服务器（无GUI）...\n";
-	read_ini_file();
-	std::string command = "java -Xmx" + std::to_string(serverini_rammax) + "M -Xms" + std::to_string(serverini_rammin) + "M -jar " + serverini_jarname + " nogui";
-	system(command.c_str());
+	if (server_open_write_ini_go == "no")
+	{
+		read_ini_file();
+	}
+	else if (server_open_write_ini_go == "yes")
+	{
+		std::cout << "已选择不使用手动配置服务器，请根据服务器配置向导进行配置。\n";
+		system("cls"); // 清屏
+		std::cout << "step 1:服务器最大可用多少内存？\n";
+		std::cin >> server_ini_rammax;
+		std::cout << "step 2:服务器最小可用多少内存？\n";
+		std::cin >> server_ini_rammin;
+		std::cout << "step 3:服务器JAR文件名？\n";
+		std::cin >> server_ini_jarname;
+		std::cout << "step 4:服务器JAR下载链接？\n";
+		std::cin >> server_ini_download_url;
+		std::ifstream check_file("server.ini");
+		if (!check_file.is_open())
+		{
+			std::ofstream ini_file("server.ini");
+			if (ini_file.is_open())
+			{
+				ini_file << "RAMmax=" << server_ini_rammax << "\n";
+				ini_file << "RAMmin=" << server_ini_rammin << "\n";
+				ini_file << "JARname=" << server_ini_jarname << "\n";
+				ini_file << "DOWnloadurl=" << server_ini_download_url << "\n";
+				ini_file.close();
+			}
+			else
+			{
+				std::cerr << "无法创建 server.ini 文件，请检查权限。\n";
+				exit(1);
+			}
+		}
+		else
+		{
+			std::ofstream ini_file("server.ini", std::ios::trunc);
+			if (ini_file.is_open())
+			{
+				ini_file << "RAMmax=" << server_ini_rammax << "\n";
+				ini_file << "RAMmin=" << server_ini_rammin << "\n";
+				ini_file << "JARname=" << server_ini_jarname << "\n";
+				ini_file << "DOWnloadurl=" << server_ini_download_url << "\n";
+				ini_file.close();
+			}
+			else
+			{
+				std::cerr << "无法写入 server.ini 文件，请检查权限。\n";
+				exit(1);
+			}
+		}
+
+
+	}
+	if (serverini_jarname.empty())
+	{
+		std::cerr << "JARname 不能为空，请在 server.ini 中设置正确的 JAR 文件名。\n";
+		exit(1);
+	}
+	if (serverini_rammax <= 0 || serverini_rammin <= 0)
+	{
+		std::cerr << "RAMmax 和 RAMmin 必须大于0，请在 server.ini 中设置正确的内存大小。\n";
+		exit(1);
+	}
+	if (serverini_jarname.find_first_of(";&|<>") != std::string::npos) {
+		std::cerr << "非法文件名！";
+		exit(1);
+	}
+	if (get_gui_or_not == "yes") {
+		std::cout << "正在启动服务器（带GUI）...\n";
+		std::string command = "java -Xmx" + std::to_string(serverini_rammax) + "M -Xms" + std::to_string(serverini_rammin) + "M -jar " + serverini_jarname;
+		system(command.c_str());
+		system("pause"); // 等待用户按任意键继续
+		exit(0); // 退出程序
+	}
+	else if (get_gui_or_not == "no") {
+		std::string command = "java -Xmx" + std::to_string(serverini_rammax) + "M -Xms" + std::to_string(serverini_rammin) + "M -jar " + serverini_jarname + " nogui";
+		system(command.c_str());
+		system("pause"); // 等待用户按任意键继续
+		exit(0); // 退出程序
+	}
 }
 void jar_download_tips()
 {
@@ -184,6 +263,24 @@ void jar_download_tips()
 void line_tips()
 {
 	std::cout << "<----------------------------------《===特殊警告]===》---------------------------------->\n";
+}
+void make_ini_file()
+{
+	std::ofstream ini_file("server.ini");
+	if (ini_file.is_open())
+	{
+		ini_file << "RAMmax=2048\n"; // 默认最大内存为2048MB
+		ini_file << "RAMmin=1024\n"; // 默认最小内存为1024MB
+		ini_file << "JARname=server.jar\n"; // 默认JAR文件名为server.jar
+		ini_file << "DOWnloadurl=https://example.com/downloads/server.jar\n"; // 默认下载链接
+		ini_file.close();
+		std::cout << "已创建 server.ini 文件，请根据需要修改。\n";
+	}
+	else
+	{
+		std::cerr << "无法创建 server.ini 文件，请检查权限。\n";
+		exit(1);
+	}
 }
 //<---------------------------------------------------------------------------------------------------------------------------------------------------------------->
 void main_menu_TUI()
@@ -246,10 +343,66 @@ int main()
 		std::cout << "请选择一个选项：";
 		std::cin >> main_menu_select;
 		if (main_menu_select == "1") {
-			mcserver_with_gui();
+			get_gui_or_not = "yes"; // 设置为使用GUI
+			std::cout << "请问是否已有配置过的ini？"
+				<< "1，是的我有。"
+				<< "2，没有，我需要手动配置，请给我时间。"
+				<< "3，我需要配置向导。"
+				<< "4，我找不到我的ini文件。\n";
+			std::cin >> server_open_write_ini_go_select;
+			while (true) {
+				if (server_open_write_ini_go_select == "1") {
+					server_open_write_ini_go = "no";
+					mcserver_without_gui_or_not();
+				}
+				else if (server_open_write_ini_go_select == "2") {
+					exit(0); // 退出程序
+				}
+				else if (server_open_write_ini_go_select == "3") {
+					server_open_write_ini_go = "yes"; // 设置为使用配置向导
+					mcserver_without_gui_or_not();
+				}
+				else if (server_open_write_ini_go_select == "4") {
+					make_ini_file(); // 创建ini文件
+					std::cout << "已创建 server.ini 文件，请根据需要修改。\n";
+					exit(0); // 退出程序
+				}
+				else {
+					std::cerr << "无效的选项，请重新选择。\n";
+					continue; // 重新开始循环
+				}
+			}
+			
 		}
 		else if (main_menu_select == "2") {
-			mcserver_without_gui();
+			get_gui_or_not = "no"; // 设置为不使用GUI
+			std::cout << "请问是否已有配置过的ini？"
+				<< "1，是的我有。"
+				<< "2，没有，我需要手动配置，请给我时间。"
+				<< "3，我需要配置向导。"
+				<< "4，我找不到我的ini文件。\n";
+			std::cin >> server_open_write_ini_go_select;
+			while (true) {
+				if (server_open_write_ini_go_select == "1") {
+					server_open_write_ini_go = "no";
+					mcserver_without_gui_or_not();
+				}
+				else if (server_open_write_ini_go_select == "2") {
+					exit(0); // 退出程序
+				}
+				else if (server_open_write_ini_go_select == "3") {
+					server_open_write_ini_go = "yes"; // 设置为使用配置向导
+					mcserver_without_gui_or_not();
+				}
+				else if (server_open_write_ini_go_select == "4") {
+					make_ini_file(); // 创建ini文件
+					exit(1);
+				}
+				else {
+					std::cerr << "无效的选项，请重新选择。\n";
+					continue; // 重新开始循环
+				}
+			}
 		}
 		else if (main_menu_select == "3") {
 			std::cout << "在线帮助请访问：https://offmn-oh-no-fried-my-notebook.github.io/Minecraft-Server-CPP-Launcher/\n";
